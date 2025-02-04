@@ -1,10 +1,24 @@
 import Colors from "@/src/constants/Colors";
 import { StyleSheet, Text, View, Image } from "react-native";
+import { Product } from "../types";
 
-const ProductListItem = ({ product }) => {
+export const defaultPizzaImage =
+  "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
+
+type ProductListItemProps = {
+  product: Product;
+};
+
+// typescript specification of props: example {props}: string
+const ProductListItem = ({ product }: ProductListItemProps) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: product.image }} style={styles.img} />
+      {/* in types.ts Product image: string | null; so we need to put default img */}
+      <Image
+        source={{ uri: product.image || defaultPizzaImage }}
+        style={styles.img}
+        resizeMode="contain"
+      />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
     </View>
@@ -19,6 +33,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 10,
     borderRadius: 20,
+    flex: 1,
+    maxWidth: "50%",
   },
   title: {
     fontSize: 18,
