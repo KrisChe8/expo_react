@@ -1,7 +1,7 @@
 import Colors from "@/src/constants/Colors";
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Product } from "../types";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
 
 export const defaultPizzaImage =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
@@ -12,8 +12,11 @@ type ProductListItemProps = {
 
 // typescript specification of props: example {props}: string
 const ProductListItem = ({ product }: ProductListItemProps) => {
+  // to get info how we are logged in as admin or user:useSegments()-> returns path arr like ["(admin)", "menu", "[id]"]
+  const segments = useSegments();
+  const role = segments[0];
   return (
-    <Link href={`/menu/${product.id}`} asChild>
+    <Link href={`/${role}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         {/* in types.ts Product image: string | null; so we need to put default img */}
         <Image

@@ -15,7 +15,7 @@ const CartScreen = () => {
         renderItem={({ item }) => <CartListItem cartItem={item} />}
         contentContainerStyle={{ gap: 10 }}
       />
-      <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 650 }}>
+      <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 600 }}>
         Total: ${total}
       </Text>
       <Button text="Checkout" />
