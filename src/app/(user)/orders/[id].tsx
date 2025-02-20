@@ -10,6 +10,10 @@ const orderDetailScreen = () => {
   // to get order by id of order:
   const order = orders.find((o) => o.id === Number(id));
 
+  if (!order) {
+    return <Text>Order not found!</Text>;
+  }
+
   return (
     <View>
       <Stack.Screen
