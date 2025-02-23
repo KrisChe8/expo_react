@@ -1,8 +1,21 @@
-import { View, FlatList } from "react-native";
-import products from "@/assets/data/products";
+import { View, FlatList, ActivityIndicator, Text } from "react-native";
+
 import ProductListItem from "@/src/components/ProductListItem";
 
+// to query:
+
+import { useProductList } from "@/src/api/products";
+
 export default function MenuScreen() {
+  // getting data via useProductList call - in api/products/inex.ts
+  const { data: products, error, isLoading } = useProductList();
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+  if (error) {
+    return <Text> Failed to fetch data</Text>;
+  }
   return (
     <View>
       {/* FlatList FOR SCROLLABLE LIST has 2 obligatory props: data={an array} renderItem ={func how to render a single item from array} */}
