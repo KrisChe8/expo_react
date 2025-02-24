@@ -22,7 +22,7 @@ const CreateProductScreen = () => {
   const { id: idString } = useLocalSearchParams();
 
   const idNum = parseFloat(
-    typeof idString === "string" ? idString : idString?.[0]
+    typeof idString === "string" ? idString : idString[0]
   );
   const isUpdating = !!idNum;
 
