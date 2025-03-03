@@ -8,7 +8,7 @@ import Button from "../components/Button";
 import { Stack } from "expo-router";
 
 const CartScreen = () => {
-  const { items, total } = useCart();
+  const { items, total, checkout } = useCart();
   return (
     <View style={{ padding: 10 }}>
       <Stack.Screen options={{ title: "Cart", headerTitleAlign: "center" }} />
@@ -20,7 +20,7 @@ const CartScreen = () => {
       <Text style={{ marginTop: 20, fontSize: 20, fontWeight: 600 }}>
         Total: ${total}
       </Text>
-      <Button text="Checkout" />
+      <Button onPress={checkout} text="Checkout" />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </View>

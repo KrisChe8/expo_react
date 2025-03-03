@@ -5,11 +5,12 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Link, useSegments } from "expo-router";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Tables } from "../database.types";
 
 dayjs.extend(relativeTime);
 
 type OrderListItemProps = {
-  order: Order;
+  order: Tables<"orders">;
 };
 
 const OrderListItem = ({ order }: OrderListItemProps) => {

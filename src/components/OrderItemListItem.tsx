@@ -1,10 +1,8 @@
 import Colors from "@/src/constants/Colors";
-import { Order, OrderItem } from "@/src/types";
-
 import { StyleSheet, Text, View, Image } from "react-native";
-import { Link, useSegments } from "expo-router";
 import { defaultPizzaImage } from "./ProductListItem";
-import products from "@/assets/data/products";
+// import products from "@/assets/data/products";
+import { Tables } from "../database.types";
 
 // as we receiving an array of OrderItem
 // type OrderItemListItemProps = {
@@ -12,27 +10,23 @@ import products from "@/assets/data/products";
 //   };
 
 type OrderItemListItemProps = {
-  orderItems: OrderItem;
+  orderItems: { products: Tables<"products"> } & Tables<"order_items">;
 };
 
 const OrderItemListItem = ({ orderItems }: OrderItemListItemProps) => {
-  const pizza = products.find((p) => p.id === Number(orderItems.product_id));
-  const pizzaImg = pizza?.image;
-  const pizzaName = pizza?.name;
-  const pizzaPrice = pizza?.price;
   return (
     <View style={styles.container}>
       <View style={styles.leftsideWrapper}>
         {/* in types.ts Product image: string | null; so we need to put default img */}
         <Image
-          source={{ uri: pizzaImg || defaultPizzaImage }}
+          source={{ uri: orderItems.products.image || defaultPizzaImage }}
           style={styles.img}
           resizeMode="contain"
         />
         <View style={styles.details}>
-          <Text style={styles.pizzaTitle}>{pizzaName}</Text>
+          <Text style={styles.pizzaTitle}>{orderItems.products.name}</Text>
           <View style={styles.pizzaDetails}>
-            <Text style={styles.price}>${pizzaPrice}</Text>
+            <Text style={styles.price}>${orderItems.products.price}</Text>
             <Text>Size: {orderItems.size}</Text>
           </View>
         </View>
