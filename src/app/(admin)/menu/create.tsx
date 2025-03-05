@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { View, Text, StyleSheet, TextInput, Image, Alert } from "react-native";
 
+import * as FileSystem from "expo-file-system";
+
 import * as ImagePicker from "expo-image-picker";
 import {
   useDeleteProduct,
@@ -12,6 +14,9 @@ import {
   useProduct,
   useUpdateProduct,
 } from "@/src/api/products";
+import { randomUUID } from "expo-crypto";
+import { supabase } from "@/src/lib/supabase";
+import { decode } from "base64-arraybuffer";
 
 const CreateProductScreen = () => {
   const [name, setName] = useState("");
@@ -19,11 +24,11 @@ const CreateProductScreen = () => {
 
   const [errors, setErrors] = useState("");
 
-  const { id: idString } = useLocalSearchParams();
+  const { id: idString = "0" } = useLocalSearchParams();
 
-  const idNum = parseFloat(
-    typeof idString === "string" ? idString : idString[0]
-  );
+  console.log(useLocalSearchParams());
+
+  const idNum = parseFloat(Array.isArray(idString) ? idString[0] : idString);
   const isUpdating = !!idNum;
 
   const { mutate: insertProduct } = useInsertProduct();
@@ -97,13 +102,14 @@ const CreateProductScreen = () => {
   };
 
   // CREATING
-  const onCreate = () => {
+  const onCreate = async () => {
     if (!validateInput()) {
       return;
     }
+    const imagePath = await uploadImage();
 
     insertProduct(
-      { name, price: parseFloat(price), image },
+      { name, price: parseFloat(price), image: imagePath },
       {
         onSuccess: () => {
           resetFields();
@@ -115,12 +121,13 @@ const CreateProductScreen = () => {
 
   // UPDATING
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     if (!validateInput()) {
       return;
     }
+    const imagePath = await uploadImage();
     updateProduct(
-      { idNum, name, price: parseFloat(price), image },
+      { idNum, name, price: parseFloat(price), image: imagePath },
       {
         onSuccess: () => {
           router.back();
@@ -150,6 +157,29 @@ const CreateProductScreen = () => {
         onPress: onDelete,
       },
     ]);
+  };
+
+  // uploads image in bucket in supabase and returns a file name of image
+  const uploadImage = async () => {
+    if (!image?.startsWith("file://")) {
+      return;
+    }
+
+    const base64 = await FileSystem.readAsStringAsync(image, {
+      encoding: "base64",
+    });
+    const filePath = `${randomUUID()}.png`;
+    const contentType = "image/png";
+    const { data, error } = await supabase.storage
+      .from("product-images")
+      .upload(filePath, decode(base64), { contentType });
+
+    if (data) {
+      return data.path;
+    }
+    if (error) {
+      console.log(error);
+    }
   };
 
   return (

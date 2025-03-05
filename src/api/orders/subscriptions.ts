@@ -14,7 +14,7 @@ export const useInsertOrderSubscription = () => {
         { event: "INSERT", schema: "public", table: "orders" },
         (payload) => {
           console.log("Change received!", payload);
-          queryClient.invalidateQueries(["orders"]);
+          queryClient.invalidateQueries({ queryKey: ["orders"] });
         }
       )
       .subscribe();
@@ -40,7 +40,7 @@ export const useUpdateOrderSubscription = (id: number) => {
           filter: `id=eq.${id}`,
         },
         (payload) => {
-          queryClient.invalidateQueries(["orders", id]);
+          queryClient.invalidateQueries({ queryKey: ["orders", id] });
         }
       )
       .subscribe();

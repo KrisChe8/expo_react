@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Product } from "../types";
 import { Link, useSegments } from "expo-router";
 import { Tables } from "../database.types";
+import RemoteImage from "./RemoteImage";
 
 export const defaultPizzaImage =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
@@ -20,8 +21,9 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
     <Link href={`/${role}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         {/* in types.ts Product image: string | null; so we need to put default img */}
-        <Image
-          source={{ uri: product.image || defaultPizzaImage }}
+        <RemoteImage
+          path={product.image}
+          fallback={defaultPizzaImage}
           style={styles.img}
           resizeMode="contain"
         />

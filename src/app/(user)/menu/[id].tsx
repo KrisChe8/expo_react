@@ -18,6 +18,7 @@ import { useCart } from "@/src/providers/CartProvider";
 import { PizzaSize } from "@/src/types";
 import { useProduct } from "@/src/api/products";
 import { supabase } from "@/src/lib/supabase";
+import RemoteImage from "@/src/components/RemoteImage";
 
 const ProductDetailsScreen = () => {
   // to get dynamic id we use:
@@ -58,8 +59,9 @@ const ProductDetailsScreen = () => {
       <Stack.Screen
         options={{ title: product?.name, headerTitleAlign: "center" }}
       />
-      <Image
-        source={{ uri: product.image || defaultPizzaImage }}
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultPizzaImage}
         style={styles.image}
       />
       <Text>Select Size:</Text>

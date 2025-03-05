@@ -19,7 +19,7 @@ const orderDetailScreen = () => {
     return <Text>Failed to load data</Text>;
   }
 
-  useUpdateOrderSubscription();
+  useUpdateOrderSubscription(id);
   return (
     <View>
       <Stack.Screen
