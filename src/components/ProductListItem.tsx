@@ -1,6 +1,6 @@
 import Colors from "@/src/constants/Colors";
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import { Product } from "../types";
+// import { Product } from "../types";
 import { Link, useSegments } from "expo-router";
 import { Tables } from "../database.types";
 import RemoteImage from "./RemoteImage";
@@ -16,7 +16,7 @@ type ProductListItemProps = {
 const ProductListItem = ({ product }: ProductListItemProps) => {
   // to get info how we are logged in as admin or user:useSegments()-> returns path arr like ["(admin)", "menu", "[id]"]
   const segments = useSegments();
-  const role = segments[0];
+  const role = segments[0] as "(admin)" | "(user)";
   return (
     <Link href={`/${role}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>

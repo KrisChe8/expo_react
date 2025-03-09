@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import { defaultPizzaImage } from "./ProductListItem";
 // import products from "@/assets/data/products";
 import { Tables } from "../database.types";
+import RemoteImage from "./RemoteImage";
 
 // as we receiving an array of OrderItem
 // type OrderItemListItemProps = {
@@ -18,11 +19,13 @@ const OrderItemListItem = ({ orderItems }: OrderItemListItemProps) => {
     <View style={styles.container}>
       <View style={styles.leftsideWrapper}>
         {/* in types.ts Product image: string | null; so we need to put default img */}
-        <Image
-          source={{ uri: orderItems.products.image || defaultPizzaImage }}
+        <RemoteImage
+          path={orderItems.products.image}
+          fallback={defaultPizzaImage}
           style={styles.img}
           resizeMode="contain"
         />
+
         <View style={styles.details}>
           <Text style={styles.pizzaTitle}>{orderItems.products.name}</Text>
           <View style={styles.pizzaDetails}>

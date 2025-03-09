@@ -1,6 +1,6 @@
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { useLocalSearchParams, Stack } from "expo-router";
-import orders from "@/assets/data/orders";
+// import orders from "@/assets/data/orders";
 import OrderItemListItem from "@/src/components/OrderItemListItem";
 import OrderListItem from "@/src/components/OrderListItem";
 import { useOrderDetails } from "@/src/api/orders";
@@ -12,6 +12,9 @@ const orderDetailScreen = () => {
   const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
 
   const { data: order, isLoading, error } = useOrderDetails(id);
+
+  useUpdateOrderSubscription(id);
+
   if (isLoading) {
     return <ActivityIndicator />;
   }
@@ -19,7 +22,6 @@ const orderDetailScreen = () => {
     return <Text>Failed to load data</Text>;
   }
 
-  useUpdateOrderSubscription(id);
   return (
     <View>
       <Stack.Screen

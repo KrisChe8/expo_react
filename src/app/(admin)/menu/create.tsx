@@ -23,10 +23,9 @@ const CreateProductScreen = () => {
   const [price, setPrice] = useState("");
 
   const [errors, setErrors] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { id: idString = "0" } = useLocalSearchParams();
-
-  console.log(useLocalSearchParams());
 
   const idNum = parseFloat(Array.isArray(idString) ? idString[0] : idString);
   const isUpdating = !!idNum;
@@ -54,7 +53,7 @@ const CreateProductScreen = () => {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
+      mediaTypes: "images",
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -91,13 +90,15 @@ const CreateProductScreen = () => {
   };
 
   // onSubmit func check what we are doing - updating(editing) product or creating new
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (isUpdating) {
       // update
-      onUpdate();
+      setLoading(true);
+      await onUpdate();
     } else {
       // create
-      onCreate();
+      setLoading(true);
+      await onCreate();
     }
   };
 
@@ -106,6 +107,7 @@ const CreateProductScreen = () => {
     if (!validateInput()) {
       return;
     }
+
     const imagePath = await uploadImage();
 
     insertProduct(
@@ -113,6 +115,7 @@ const CreateProductScreen = () => {
       {
         onSuccess: () => {
           resetFields();
+          setLoading(false);
           router.back();
         },
       }
@@ -125,11 +128,13 @@ const CreateProductScreen = () => {
     if (!validateInput()) {
       return;
     }
+
     const imagePath = await uploadImage();
     updateProduct(
       { idNum, name, price: parseFloat(price), image: imagePath },
       {
         onSuccess: () => {
+          setLoading(false);
           router.back();
         },
       }
@@ -178,7 +183,7 @@ const CreateProductScreen = () => {
       return data.path;
     }
     if (error) {
-      console.log(error);
+      console.log("Upload error", error);
     }
   };
 
@@ -214,7 +219,20 @@ const CreateProductScreen = () => {
       />
 
       <Text style={{ color: "red" }}>{errors}</Text>
-      <Button onPress={onSubmit} text={isUpdating ? "Update" : "Create"} />
+      <Button
+        disabled={loading}
+        onPress={onSubmit}
+        text={
+          isUpdating
+            ? loading
+              ? "Updating..."
+              : "Update"
+            : loading
+            ? "Creating..."
+            : "Create"
+        }
+        style={loading ? styles.loadingBtn : null}
+      />
       {isUpdating && (
         <Text onPress={confirmDelete} style={styles.textButton}>
           Delete
@@ -251,6 +269,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: Colors.light.tint,
     marginVertical: 10,
+  },
+  loadingBtn: {
+    backgroundColor: "#abd4f1",
   },
 });
 

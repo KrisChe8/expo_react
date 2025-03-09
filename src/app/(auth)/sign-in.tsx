@@ -20,7 +20,6 @@ function SignInScreen() {
   const onSubmit = () => {
     setError("");
     if (checkFields()) {
-      console.warn("Signing in");
       setEmail("");
       setPassword("");
     }

@@ -27,13 +27,13 @@ export type Enums<
 
 export type PizzaSize = "S" | "M" | "L" | "XL";
 
-// export type CartItem = {
-//   id: string;
-//   product: Product;
-//   product_id: number;
-//   size: PizzaSize;
-//   quantity: number;
-// };
+export type CartItem = {
+  id: string;
+  product: Product;
+  product_id: number;
+  size: PizzaSize;
+  quantity: number;
+};
 
 export const OrderStatusList: OrderStatus[] = [
   "New",
@@ -44,26 +44,28 @@ export const OrderStatusList: OrderStatus[] = [
 
 export type OrderStatus = "New" | "Cooking" | "Delivering" | "Delivered";
 
-// export type Order = {
-//   id: number;
-//   created_at: string;
-//   total: number;
-//   user_id: string;
-//   status: OrderStatus;
+type Product = Tables<"products">;
 
-//   order_items?: OrderItem[];
-// };
+export type Order = {
+  id: number;
+  created_at: string;
+  total: number;
+  user_id: string;
+  status: OrderStatus;
 
-// export type OrderItem = {
-//   id: number;
-//   product_id: number;
-//   products: Product;
-//   order_id: number;
-//   size: PizzaSize;
-//   quantity: number;
-// };
+  order_items?: OrderItem[];
+};
 
-// export type Profile = {
-//   id: string;
-//   group: string;
-// };
+export type OrderItem = {
+  id: number;
+  product_id: number;
+  products: Product;
+  order_id: number;
+  size: PizzaSize;
+  quantity: number;
+};
+
+export type Profile = {
+  id: string;
+  group: string;
+};

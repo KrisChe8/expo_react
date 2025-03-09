@@ -51,12 +51,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     };
     setItems([newCartItem, ...items]);
   };
-  const updateQuantity = (itemId: string, amount: -1 | 1) => {
-    const updatedItems = items.map((item) =>
-      item.id !== itemId ? item : { ...item, quantity: item.quantity + amount }
-    );
-    setItems(updatedItems.filter((item) => item.quantity > 0));
-  };
+  const updateQuantity = (itemId: string, amount: -1 | 1) => {};
 
   const total = Number(
     items

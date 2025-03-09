@@ -22,7 +22,7 @@ export default function TabLayout() {
   // to protect from not signed in user to get to the page
   const { session } = useAuth();
   if (!session) {
-    return <Redirect href={"/"} />;
+    return <Redirect href={"/sign-in"} />;
   }
 
   return (
@@ -68,6 +68,14 @@ export default function TabLayout() {
           // to hide
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          headerTitleAlign: "center",
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>
