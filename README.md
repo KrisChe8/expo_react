@@ -61,6 +61,8 @@ npm install
 expo start
 ```
 
+<img src="assets/screenshots/1.jpg" alt="Home Screen" width="300"/>
+
 ![Home Screen](assets/screenshots/1.jpg)
 ![Home Screen](assets/screenshots/2.jpg)
 ![Home Screen](assets/screenshots/3.jpg)
