@@ -11,6 +11,7 @@ import OrderListItem from "@/src/components/OrderListItem";
 import Colors from "@/src/constants/Colors";
 import { OrderStatusList } from "@/src/types";
 import { useOrderDetails, useUpdateOrder } from "@/src/api/orders";
+import { notifyUserAboutOrderUpdate } from "@/src/lib/notifications";
 
 const orderDetailScreen = () => {
   // to get dynamic id we use:
@@ -30,8 +31,11 @@ const orderDetailScreen = () => {
   // to get order by id of order:
   // const order = orders.find((o) => o.id === Number(id));
 
-  const updateStatus = (status) => {
-    updateOrder({ id: id, updatedField: { status } });
+  const updateStatus = async (status: string) => {
+    await updateOrder({ id: id, updatedField: { status } });
+    if (order) {
+      await notifyUserAboutOrderUpdate({ ...order, status });
+    }
   };
 
   return (
